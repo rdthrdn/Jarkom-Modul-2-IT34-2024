@@ -27,3 +27,137 @@
 | AlexanderVolta | eth0 | 10.80.3.2 | 255.255.255.0	| 10.80.3.1 |
 | Balaraja | eth0 | 10.80.3.5 | 255.255.255.0	| 10.80.3.1 |
 
+<details>
+
+<summary>Detail Configure</summary>
+
+#### Nusantara (Router)
+```
+auto eth0
+iface eth0 inet dhcp
+
+auto eth1
+iface eth1 inet static
+	address 10.80.1.1
+	netmask 255.255.255.0
+
+auto eth2
+iface eth2 inet static
+	address 10.80.2.1
+	netmask 255.255.255.0
+
+auto eth3
+iface eth3 inet static
+	address 10.80.3.1
+	netmask 255.255.255.0
+```
+
+### Sriwijaya (DNS Master)
+```
+auto eth0
+iface eth0 inet static
+	address 10.80.3.6
+	netmask 255.255.255.0
+	gateway 10.80.3.1
+echo nameserver 192.168.122.1 > /etc/resolv.conf
+```
+
+### Majapahit (DNS Slave)
+```
+auto eth0
+iface eth0 inet static
+	address 10.80.2.2
+	netmask 255.255.255.0
+	gateway 10.80.2.1
+echo nameserver 192.168.122.1 # Nusantara (Router) > /etc/resolv.conf
+```
+
+### Tanjungkulai (Web Server)
+```
+auto eth0
+iface eth0 inet static
+	address 10.80.2.3
+	netmask 255.255.255.0
+	gateway 10.80.2.1
+echo nameserver 192.168.122.1 # Nusantara (Router) > /etc/resolv.conf
+```
+
+### Bedahulu (Web Server)
+```
+auto eth0
+iface eth0 inet static
+	address 10.80.2.4
+	netmask 255.255.255.0
+	gateway 10.80.2.1
+echo nameserver 192.168.122.1 # Nusantara (Router) > /etc/resolv.conf
+```
+
+### Kotalingga (Web Server)
+```
+auto eth0
+iface eth0 inet static
+	address 10.80.3.4
+	netmask 255.255.255.0
+	gateway 10.80.3.1
+echo nameserver 192.168.122.1 # Nusantara (Router) > /etc/resolv.conf
+```
+
+### Solok (Load Balancer)
+```
+auto eth0
+iface eth0 inet static
+	address 10.80.1.2
+	netmask 255.255.255.0
+	gateway 10.80.1.1
+echo nameserver 192.168.122.1 # Nusantara (Router) > /etc/resolv.conf
+```
+
+### Samaratungga (Client)
+```
+auto eth0
+iface eth0 inet static
+	address 10.80.1.3
+	netmask 255.255.255.0
+	gateway 10.80.1.1
+echo nameserver 10.80.3.6 # Sriwijaya (Master) > /etc/resolv.conf
+echo nameserver 10.80.2.2 # Majapahit (Slave) >> /etc/resolv.conf
+echo nameserver 192.168.122.1 # Nusantara (Router) >> /etc/resolv.conf
+```
+
+### Mulawarman (Client)
+```
+auto eth0
+iface eth0 inet static
+	address 10.80.3.3
+	netmask 255.255.255.0
+	gateway 10.80.3.1
+echo nameserver 10.80.3.6 # Sriwijaya (Master) > /etc/resolv.conf
+echo nameserver 10.80.2.2 # Majapahit (Slave) >> /etc/resolv.conf
+echo nameserver 192.168.122.1 # Nusantara (Router) >> /etc/resolv.conf
+```
+
+### AlexanderVolta (Client)
+```
+auto eth0
+iface eth0 inet static
+	address 10.80.3.2
+	netmask 255.255.255.0
+	gateway 10.80.3.1
+cho nameserver 10.80.3.6 # Sriwijaya (Master) > /etc/resolv.conf
+echo nameserver 10.80.2.2 # Majapahit (Slave) >> /etc/resolv.conf
+echo nameserver 192.168.122.1 # Nusantara (Router) >> /etc/resolv.conf
+```
+
+### Balaraja (Client)
+```
+auto eth0
+iface eth0 inet static
+	address 10.80.3.5
+	netmask 255.255.255.0
+	gateway 10.80.3.1
+echo "nameserver 10.80.3.6 # Sriwijaya (Master)
+nameserver 10.80.2.2 # Majapahit (Slave)
+nameserver 192.168.122.1 # Nusantara (Router)" > /etc/resolv.conf
+```
+
+</details>
