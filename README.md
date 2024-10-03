@@ -27,8 +27,8 @@
 | AlexanderVolta | eth0 | 10.80.3.2 | 255.255.255.0	| 10.80.3.1 |
 | Balaraja | eth0 | 10.80.3.5 | 255.255.255.0	| 10.80.3.1 |
 
+## Config
 <details>
-
 <summary>Detail Configure</summary>
 
 #### Nusantara (Router)
@@ -166,43 +166,353 @@ nameserver 192.168.122.1 # Nusantara (Router)" > /etc/resolv.conf
 ### Soal 1
 Untuk mempersiapkan peperangan World War MMXXIV (Iya sebanyak itu), Sriwijaya membuat dua kotanya menjadi web server yaitu Tanjungkulai, dan Bedahulu, serta Sriwijaya sendiri akan menjadi DNS Master. Kemudian karena merasa terdesak, Majapahit memberikan bantuan dan menjadikan kerajaannya (Majapahit) menjadi DNS Slave. 
 #### Tahapan
-[Link to section](#ip-address)
+[Link to section](#configure)
 #### Dokumentasi
 ### Soal 2
 Karena para pasukan membutuhkan koordinasi untuk melancarkan serangannya, maka buatlah sebuah domain yang mengarah ke Solok dengan alamat sudarsana.xxxx.com dengan alias www.sudarsana.xxxx.com, dimana xxxx merupakan kode kelompok. Contoh: sudarsana.it01.com.
 #### Tahapan
+```bash
+# soal 2 =================================
+
+echo 'zone "sudarsana.it34.com" {
+	type master;
+	file "/etc/bind/jarkom/sudarsana.it34.com";
+};' > /etc/bind/named.conf.local
+
+mkdir /etc/bind/jarkom
+
+cp /etc/bind/db.local /etc/bind/jarkom/sudarsana.it34.com
+
+echo '
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     sudarsana.it34.com. root.sudarsana.it34.com. (
+                        2		; Serial
+                        604800		; Refresh
+                        86400		; Retry
+                        2419200		; Expire
+                        604800 )	; Negative Cache TTL
+;
+@       IN      NS      sudarsana.it34.com.
+@       IN      A       10.80.1.2	; IP Solok
+www     IN      CNAME   sudarsana.it34.com.
+@	IN	AAAA	::1' > /etc/bind/jarkom/sudarsana.it34.com
+
+service bind9 restart 
+```
+Untuk soal ini, config diatas dimasukkan kedalam .bashrc Sriwijaya
 #### Dokumentasi
+![image](https://github.com/user-attachments/assets/c8de36c7-9ffe-486c-9a61-4248043278d9)
+
 ### Soal 3
 Para pasukan juga perlu mengetahui mana titik yang akan diserang, sehingga dibutuhkan domain lain yaitu pasopati.xxxx.com dengan alias www.pasopati.xxxx.com yang mengarah ke Kotalingga.
 #### Tahapan
+```bash
+# soal 3 =================================
+
+echo 'zone "pasopati.it34.com" {
+	type master;
+	file "/etc/bind/jarkom/pasopati.it34.com";
+};' >> /etc/bind/named.conf.local
+
+cp /etc/bind/db.local /etc/bind/jarkom/pasopati.it34.com
+
+echo '
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     pasopati.it34.com. root.pasopati.it34.com. (
+                        2		; Serial
+                        604800		; Refresh
+                        86400		; Retry
+                        2419200		; Expire
+                        604800 )	; Negative Cache TTL
+;
+@       IN      NS      pasopati.it34.com.
+@       IN      A       10.80.3.4	; IP Kotalingga
+www     IN      CNAME   pasopati.it34.com.
+@	IN	AAAA	::1' > /etc/bind/jarkom/pasopati.it34.com
+```
+Untuk soal ini, config diatas dimasukkan kedalam .bashrc Sriwijaya
 #### Dokumentasi
+![image](https://github.com/user-attachments/assets/0145d173-17bf-46d9-94c9-2a5de975eace)
+
 ### Soal 4
 Markas pusat meminta dibuatnya domain khusus untuk menaruh informasi persenjataan dan suplai yang tersebar. Informasi dan suplai meme terbaru tersebut mengarah ke Tanjungkulai dan domain yang ingin digunakan adalah rujapala.xxxx.com dengan alias www.rujapala.xxxx.com.
 #### Tahapan
+```bash
+# soal 4 =================================
+
+echo 'zone "rujapala.it34.com" {
+	type master;
+	file "/etc/bind/jarkom/rujapala.it34.com";
+};' >> /etc/bind/named.conf.local
+
+cp /etc/bind/db.local /etc/bind/jarkom/rujapala.it34.com
+
+echo '
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     rujapala.it34.com. root.rujapala.it34.com. (
+                        2		; Serial
+                        604800		; Refresh
+                        86400		; Retry
+                        2419200		; Expire
+                        604800 )	; Negative Cache TTL
+;
+@       IN      NS	rujapala.it34.com.
+@       IN      A	10.80.2.3	; IP Tanjungkulai
+www	IN	CNAME	rujapala.it34.com
+@	IN      AAAA	::1' > /etc/bind/jarkom/rujapala.it34.com
+
+service bind9 restart
+```
+Untuk soal ini, config diatas dimasukkan kedalam .bashrc Sriwijaya
 #### Dokumentasi
+![image](https://github.com/user-attachments/assets/57157c3d-a3af-4a61-82d5-7e4c6a920173)
+
 ### Soal 5 
 Pastikan domain-domain tersebut dapat diakses oleh seluruh komputer (client) yang berada di Nusantara.
 #### Tahapan
+[Link to section](#ip-address)
+[Link to section](#configure)
 #### Dokumentasi
+![image](https://github.com/user-attachments/assets/7634d094-cd0e-4dd8-846e-7f8f678fe645)
+![image](https://github.com/user-attachments/assets/3b911e34-3c71-42a2-ae04-76f55b15823d)
+![image](https://github.com/user-attachments/assets/84f0f8ab-91c2-430a-81a8-98510dcde543)
+
 ### Soal 6
 Beberapa daerah memiliki keterbatasan yang menyebabkan hanya dapat mengakses domain secara langsung melalui alamat IP domain tersebut. Karena daerah tersebut tidak diketahui secara spesifik, pastikan semua komputer (client) dapat mengakses domain pasopati.xxxx.com melalui alamat IP Kotalingga (Notes: menggunakan pointer record).
 #### Tahapan
+```bash
+# soal 6 =================================
+
+echo 'zone "3.80.10.in-addr.arpa" {
+	type master;
+	file "/etc/bind/jarkom/3.80.10.in-addr.arpa";
+};' >> /etc/bind/named.conf.local
+
+cp /etc/bind/db.local /etc/bind/jarkom/3.80.10.in-addr.arpa
+
+echo '
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     pasopati.it34.com. root.pasopati.it34.com. (
+                        2		; Serial
+                        604800		; Refresh
+                        86400		; Retry
+                        2419200		; Expire
+                        604800 )	; Negative Cache TTL
+;
+3.80.10.in-addr.arpa.	IN      NS      pasopati.it34.com.
+4			IN	PTR	pasopati.it34.com.' > /etc/bind/jarkom/3.80.10.in-addr.arpa
+
+service bind9 restart
+```
+Untuk soal ini, config diatas dimasukkan kedalam .bashrc Sriwijaya
 #### Dokumentasi
+![image](https://github.com/user-attachments/assets/9287d2ae-acf1-4944-8189-e9b78524250d)
+
 ### Soal 7
 Akhir-akhir ini seringkali terjadi serangan brainrot ke DNS Server Utama, sebagai tindakan antisipasi kamu diperintahkan untuk membuat DNS Slave di Majapahit untuk semua domain yang sudah dibuat sebelumnya yang mengarah ke Sriwijaya.
 #### Tahapan
+```bash
+# soal 7 =================================
+
+echo '
+zone "sudarsana.it34.com" {
+	type slave;
+	masters { 10.80.3.6; };
+	file "/var/lib/bind/sudarsana.it34.com";
+};
+
+zone "pasopati.it34.com" {
+	type slave;
+	masters { 10.80.3.6; };
+	file "/var/lib/bind/pasopati.it34.com";
+};
+
+zone "rujapala.it34.com" {
+	type slave;
+	masters { 10.80.3.6; };
+	file "/var/lib/bind/rujapala.it34.com";
+};' > /etc/bind/named.conf.local
+
+service bind9 restart
+```
+Untuk soal ini, config diatas dimasukkan kedalam .bashrc Majapahit
+```bash
+echo 'zone "sudarsana.it34.com" {
+	type master;
+	notify yes; // soal 7
+	also-notify { 10.80.2.2; }; // soal 7
+	allow-transfer { 10.80.2.2; }; // soal 7
+	file "/etc/bind/jarkom/sudarsana.it34.com";
+};' > /etc/bind/named.conf.local
+
+echo 'zone "pasopati.it34.com" {
+	type master;
+	notify yes; // soal 7
+	also-notify { 10.80.2.2; }; // soal 7
+	allow-transfer { 10.80.2.2; }; // soal 7
+	file "/etc/bind/jarkom/pasopati.it34.com";
+};' >> /etc/bind/named.conf.local
+
+echo 'zone "rujapala.it34.com" {
+	type master;
+	notify yes; // soal 7
+	also-notify { 10.80.2.2; }; // soal 7
+	allow-transfer { 10.80.2.2; }; // soal 7
+	file "/etc/bind/jarkom/rujapala.it34.com";
+};' >> /etc/bind/named.conf.local
+```
+Untuk soal ini, config diatas dimasukkan kedalam .bashrc Sriwijaya di bagian zone config /etc/bind/named.conf.local
 #### Dokumentasi
+![image](https://github.com/user-attachments/assets/6367b4e0-b134-4c1b-a028-ae19fd09e11f)
+![image](https://github.com/user-attachments/assets/d95a6732-540e-4f71-b3c4-e40a617bf58a)
+
 ### Soal 8
 Kamu juga diperintahkan untuk membuat subdomain khusus melacak kekuatan tersembunyi di Ohio dengan subdomain cakra.sudarsana.xxxx.com yang mengarah ke Bedahulu.
 #### Tahapan
+```bash
+echo '
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     sudarsana.it34.com. root.sudarsana.it34.com. (
+                        2		; Serial
+                        604800		; Refresh
+                        86400		; Retry
+                        2419200		; Expire
+                        604800 )	; Negative Cache TTL
+;
+@       IN      NS      sudarsana.it34.com.
+@       IN      A       10.80.1.2	; IP Solok
+www     IN      CNAME   sudarsana.it34.com.
+cakra	IN	A	10.80.2.4	; IP Bedahulu, soal 8
+@	IN	AAAA	::1' > /etc/bind/jarkom/sudarsana.it34.com
+
+service bind9 restart 
+```
+Untuk soal ini, config diatas dimasukkan kedalam .bashrc Sriwijaya di bagian bind datafile /etc/bind/jarkom/sudarsana.it34.com
 #### Dokumentasi
+![image](https://github.com/user-attachments/assets/bd8a9901-c695-4a3a-9be1-60dbc35e61d3)
+
 ### Soal 9
 Karena terjadi serangan DDOS oleh shikanoko nokonoko koshitantan (NUN), sehingga sistem komunikasinya terhalang. Untuk melindungi warga, kita diperlukan untuk membuat sistem peringatan dari siren man oleh Frekuensi Freak dan memasukkannya ke subdomain panah.pasopati.xxxx.com dalam folder panah dan pastikan dapat diakses secara mudah dengan menambahkan alias www.panah.pasopati.xxxx.com dan mendelegasikan subdomain tersebut ke Majapahit dengan alamat IP menuju radar di Kotalingga.
 #### Tahapan
+```bash
+echo '
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     pasopati.it34.com. root.pasopati.it34.com. (
+                        2		; Serial
+                        604800		; Refresh
+                        86400		; Retry
+                        2419200		; Expire
+                        604800 )	; Negative Cache TTL
+;
+@       IN      NS      pasopati.it34.com.
+@       IN      A       10.80.3.4	; IP Kotalingga
+www     IN      CNAME   pasopati.it34.com.
+ns1	IN	A	10.80.2.2	; Delegasi ke Majapahit, soal 9
+panah	IN	NS	ns1		; soal 9
+@	IN	AAAA	::1' > /etc/bind/jarkom/pasopati.it34.com
+
+# soal 9 ==================================
+
+echo '
+options {
+        directory "/var/cache/bind";
+
+        //dnssec-validation auto;
+        allow-query{any;};
+
+        auth-nxdomain no;    # conform to RFC1035
+        listen-on-v6 { any; };
+};' > /etc/bind/named.conf.options
+
+service bind9 restart
+```
+Untuk soal ini, config diatas dimasukkan kedalam .bashrc Sriwijaya
+```bash
+# soal 9 =================================
+
+echo '
+options {
+        directory "/var/cache/bind";
+
+        //dnssec-validation auto;
+        allow-query{any;};
+
+        auth-nxdomain no;    # conform to RFC1035
+        listen-on-v6 { any; };
+};' > /etc/bind/named.conf.options
+
+echo 'zone "panah.pasopati.it34.com" {
+	type master;
+	file "/etc/bind/panah/panah.pasopati.it34.com";
+};' >> /etc/bind/named.conf.local
+
+mkdir /etc/bind/panah
+
+cp /etc/bind/db.local /etc/bind/panah/panah.pasopati.it34.com
+
+echo '
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     panah.pasopati.it34.com. panah.pasopati.it34.com. (
+                        2		; Serial
+                        604800		; Refresh
+                        86400		; Retry
+                        2419200		; Expire
+                        604800 )	; Negative Cache TTL
+;
+@       IN      NS	panah.pasopati.it34.com.
+@       IN      A	10.80.3.4	; IP Kotalingga
+www	IN	CNAME	panah.pasopati.it34.com.' > /etc/bind/panah/panah.pasopati.it34.com	
+
+service bind9 restart
+```
+Untuk soal ini, config diatas dimasukkan kedalam .bashrc Majapahit
 #### Dokumentasi
 ### Soal 10
 Markas juga meminta catatan kapan saja meme brain rot akan dijatuhkan, maka buatlah subdomain baru di subdomain panah yaitu log.panah.pasopati.xxxx.com serta aliasnya www.log.panah.pasopati.xxxx.com yang juga mengarah ke Kotalingga.
 #### Tahapan
+```bash
+echo '
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     panah.pasopati.it34.com. panah.pasopati.it34.com. (
+                        2		; Serial
+                        604800		; Refresh
+                        86400		; Retry
+                        2419200		; Expire
+                        604800 )	; Negative Cache TTL
+;
+@       IN      NS	panah.pasopati.it34.com.
+@       IN      A	10.80.3.4	; IP Kotalingga
+www	IN	CNAME	panah.pasopati.it34.com.
+log	IN	A	10.80.3.4	; IP Kotalingga,  soal 10
+www.log	IN	CNAME	panah.pasopati.it34.com.	; soal 10' > /etc/bind/panah/panah.pasopati.it34.com	
+
+service bind9 restart
+```
+Untuk soal ini, config diatas dimasukkan kedalam .bashrc Majapahit
 #### Dokumentasi
 ### Soal 11
 Setelah pertempuran mereda, warga IT dapat kembali mengakses jaringan luar dan menikmati meme brainrot terbaru, tetapi hanya warga Majapahit saja yang dapat mengakses jaringan luar secara langsung. Buatlah konfigurasi agar warga IT yang berada diluar Majapahit dapat mengakses jaringan luar melalui DNS Server Majapahit.
